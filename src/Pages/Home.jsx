@@ -1,4 +1,11 @@
 
+// Home.jsx
+// Main frontend page for LiteFlex. Handles:
+// - Fetching and displaying the list of video "shorts"
+// - Playing selected videos (YouTube embed or direct links)
+// - Searching/filtering videos by name
+// - Uploading a video URL to the backend API at POST /api/upload
+// Keep this file focused on UI logic; API calls use axios.
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
 
