@@ -15,7 +15,7 @@ function Home() {
   }, [videos]);
 
   const fetchVideos = () => {
-    axios.get("http://localhost:8000/api/shorts")
+    axios.get("https://liteflex-backend.vercel.app/api/shorts")
       .then((res) => {
         setVideos(res.data);
         if (res.data.length > 0 && !currentVideo) {
@@ -40,15 +40,14 @@ function Home() {
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append('videoLink', uploadForm.videoLink.trim());
-    formData.append('name', uploadForm.name || 'Untitled');
-    formData.append('tags', JSON.stringify(uploadForm.tags.split(',').map(t => t.trim()).filter(t => t)));
+    const payload = {
+      videoLink: uploadForm.videoLink.trim(),
+      name: uploadForm.name || 'Untitled',
+      tags: uploadForm.tags.split(',').map(t => t.trim()).filter(t => t)
+    };
 
     try {
-      await axios.post('http://localhost:8000/api/uploads', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await axios.post('https://liteflex-backend.vercel.app/api/upload', payload);
       alert('Video saved successfully!');
       setUploadForm({ name: '', tags: '', videoLink: '' });
       fetchVideos();
@@ -75,14 +74,14 @@ function Home() {
         <h1 className="text-4xl font-black text-red-600" style={{ letterSpacing: '-0.05em', fontFamily: 'Arial, sans-serif' }}>
           LIGHT<span className="text-black">FLEX</span>
         </h1>
-        <div className="flex-1 mx-8 flex justify-center">
-          <input
-            type="text"
-            placeholder="Search videos by name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-1/2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="flex-1 mx-8">
+            <input
+              type="text"
+              placeholder="Search videos by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-[50vw] p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
         </div>
       </div>
       <div className="mb-8">
