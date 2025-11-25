@@ -15,7 +15,7 @@ function Home() {
   }, []);
 
   const fetchVideos = () => {
-    axios.get("https://liteflex-backend.vercel.app/api/shorts")
+    axios.get("http://localhost:8000/api/shorts")
       .then((res) => {
         setVideos(res.data);
         if (res.data.length > 0 && !currentVideo) {
@@ -46,7 +46,7 @@ function Home() {
     formData.append('tags', JSON.stringify(uploadForm.tags.split(',').map(t => t.trim()).filter(t => t)));
 
     try {
-      await axios.post('https://liteflex-backend.vercel.app/api/short/upload', formData, {
+      await axios.post('http://localhost:8000/api/short/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Video saved successfully!');
