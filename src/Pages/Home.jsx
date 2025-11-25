@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     fetchVideos();
-  }, []);
+  }, [videos]);
 
   const fetchVideos = () => {
     axios.get("http://localhost:8000/api/shorts")
@@ -46,7 +46,7 @@ function Home() {
     formData.append('tags', JSON.stringify(uploadForm.tags.split(',').map(t => t.trim()).filter(t => t)));
 
     try {
-      await axios.post('http://localhost:8000/api/short/upload', formData, {
+      await axios.post('http://localhost:8000/api/uploads', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Video saved successfully!');
@@ -57,12 +57,6 @@ function Home() {
     } finally {
       setUploading(false);
     }
-  };
-  const getYouTubeThumb = (url) => {
-    if (!url) return null;
-    const match = url.match(/(?:youtube(?:-nocookie)?\.com\/(?:.*v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i);
-    if (match && match[1]) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
-    return null;
   };
   const getYouTubeEmbedUrl = (url) => {
     if (!url) return null;
@@ -77,14 +71,19 @@ function Home() {
   
   return (
     <div className="px-[100px] py-6 bg-white min-h-screen">
-      <div className="mb-6 flex justify-center">
-        <input
-          type="text"
-          placeholder="Search videos by name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-1/2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-4xl font-black text-red-600" style={{ letterSpacing: '-0.05em', fontFamily: 'Arial, sans-serif' }}>
+          LIGHT<span className="text-black">FLEX</span>
+        </h1>
+        <div className="flex-1 mx-8 flex justify-center">
+          <input
+            type="text"
+            placeholder="Search videos by name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/2 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
       </div>
       <div className="mb-8">
         <div className="flex gap-6">
@@ -175,8 +174,8 @@ function Home() {
       </div>
 
       <div className="border-t pt-6 mt-8">
-        <h2 className="text-2xl font-bold mb-4">Upload New Video</h2>
-        <form onSubmit={handleUpload} className="max-w-2xl space-y-4">
+        <h2 className="text-2xl font-bold mb-4 text-center">Upload New Video</h2>
+        <form onSubmit={handleUpload} className="max-w-2xl mx-auto space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <input
               type="text"
@@ -205,24 +204,7 @@ function Home() {
             <p className="text-xs text-gray-500 mt-1">Click Preview to test or Upload to save.</p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                if (uploadForm.videoLink?.trim()) {
-                  setCurrentVideo({
-                    name: uploadForm.name || 'Preview',
-                    videoUrl: uploadForm.videoLink.trim(),
-                    tags: uploadForm.tags ? uploadForm.tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
-                    thumbnail: getYouTubeThumb(uploadForm.videoLink.trim())
-                  });
-                  setIsPlaying(true);
-                }
-              }}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-            >
-              Preview
-            </button>
+          <div className="flex items-center gap-3 justify-center">
             <button
               type="submit"
               disabled={uploading}
