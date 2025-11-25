@@ -1,6 +1,7 @@
-Tech used at Frontend
- React + Vite
- Tailwind css
- axios
+Tech used at Frontend --
+ React + Vite,
+ Tailwind css,
+ Axios,
+ Varcel
  
 
