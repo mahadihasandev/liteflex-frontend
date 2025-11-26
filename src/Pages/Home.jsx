@@ -76,30 +76,29 @@ function Home() {
   );
   
   return (
-    <div className="px-[100px] py-6 bg-white min-h-screen">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-4xl font-black text-red-600" style={{ letterSpacing: '-0.05em', fontFamily: 'Arial, sans-serif' }}>
+    <div className="px-4 sm:px-6 lg:px-[100px] py-6 bg-white min-h-screen">
+      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <h1 className="text-3xl font-black text-red-600 sm:text-4xl" style={{ letterSpacing: '-0.05em', fontFamily: 'Arial, sans-serif' }}>
           LIGHT<span className="text-black">FLEX</span>
         </h1>
-        <div className="flex-1 mx-8">
+        <div className="w-full lg:flex-1 lg:mx-8">
             <input
               type="text"
               placeholder="Search videos by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-[50vw] p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full lg:w-[50vw] p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
       </div>
       <div className="mb-8">
-        <div className="flex gap-6">
+        <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex-1">
             {currentVideo ? (
-              <div className="bg-black rounded-lg overflow-hidden">
+              <div className="bg-black rounded-lg overflow-hidden aspect-video">
                 {isYouTubeUrl(currentVideo.videoUrl) ? (
                   <iframe
-                    width="100%"
-                    height="500"
+                    className="h-full w-full"
                     src={getYouTubeEmbedUrl(currentVideo.videoUrl)}
                     title={currentVideo.name}
                     frameBorder="0"
@@ -109,8 +108,7 @@ function Home() {
                 ) : (
                   <video
                     controls
-                    width="100%"
-                    height="500"
+                    className="h-full w-full object-cover"
                     autoPlay={isPlaying}
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
@@ -130,7 +128,7 @@ function Home() {
               <div className="mt-4">
                 <h2 className="text-2xl font-bold">{currentVideo.name}</h2>
                 {currentVideo.tags && currentVideo.tags.length > 0 && (
-                  <div className="flex gap-2 mt-2">
+                  <div className="mt-2 flex flex-wrap gap-2">
                     {currentVideo.tags.map((tag, i) => (
                       <span key={i} className="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">
                         {tag}
@@ -142,9 +140,9 @@ function Home() {
             )}
           </div>
 
-          <div className="w-80">
+          <div className="w-full lg:w-80">
             <h3 className="text-lg font-semibold mb-3">Videos</h3>
-            <div className="h-96 overflow-y-auto space-y-2 bg-gray-50 rounded-lg p-3">
+            <div className="max-h-80 overflow-y-auto space-y-2 bg-gray-50 rounded-lg p-3 lg:h-96">
               {filteredVideos.length === 0 ? (
                 <p className="text-gray-500 text-sm">No videos found</p>
               ) : (
@@ -181,8 +179,8 @@ function Home() {
 
       <div className="border-t pt-6 mt-8">
         <h2 className="text-2xl font-bold mb-4 text-center">Upload New Video</h2>
-        <form onSubmit={handleUpload} className="max-w-2xl mx-auto space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleUpload} className="max-w-2xl mx-auto space-y-4 px-2 sm:px-0">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <input
               type="text"
               placeholder="Video Title"
@@ -210,7 +208,7 @@ function Home() {
             <p className="text-xs text-gray-500 mt-1">Click Preview to test or Upload to save.</p>
           </div>
 
-          <div className="flex items-center gap-3 justify-center">
+          <div className="flex flex-wrap items-center gap-3 justify-center">
             <button
               type="submit"
               disabled={uploading}
