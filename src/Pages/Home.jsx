@@ -17,10 +17,12 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Keep the list in sync with the backend; videos dependency allows refresh after uploads.
   useEffect(() => {
     fetchVideos();
-  }, [videos]);
+  }, [currentVideo]);
 
+  // Get the existing shorts from the hosted backend and prime the player.
   const fetchVideos = () => {
     axios.get("https://liteflex-backend.vercel.app/api/shorts")
       .then((res) => {
@@ -38,6 +40,7 @@ function Home() {
     setUploadForm({ ...uploadForm, videoLink: val });
   };
 
+  // Submit a user-provided video URL to the backend for storage.
   const handleUpload = async (e) => {
     e.preventDefault();
 
@@ -71,6 +74,7 @@ function Home() {
   };
   const isYouTubeUrl = (url) => /(?:youtube(?:-nocookie)?\.com\/|youtu\.be\/)/.test(url || '');
   
+  // Simple client-side search based on the title.
   const filteredVideos = videos.filter(video => 
     video.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
