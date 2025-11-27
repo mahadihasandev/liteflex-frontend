@@ -20,7 +20,7 @@ function Home() {
   // Keep the list in sync with the backend; videos dependency allows refresh after uploads.
   useEffect(() => {
     fetchVideos();
-  }, [currentVideo]);
+  }, [videos]);
 
   // Get the existing shorts from the hosted backend and prime the player.
   const fetchVideos =async () => {
