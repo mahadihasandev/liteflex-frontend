@@ -23,8 +23,8 @@ function Home() {
   }, [currentVideo]);
 
   // Get the existing shorts from the hosted backend and prime the player.
-  const fetchVideos = () => {
-    axios.get("https://liteflex-backend.vercel.app/api/shorts")
+  const fetchVideos =async () => {
+    await axios.get("https://liteflex-backend.vercel.app/api/shorts")
       .then((res) => {
         setVideos(res.data);
         if (res.data.length > 0 && !currentVideo) {
