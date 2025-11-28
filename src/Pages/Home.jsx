@@ -17,22 +17,23 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Keep the list in sync with the backend; videos dependency allows refresh after uploads.
+  // Load the list once on mount; explicit calls (e.g., after uploads) refresh manually.
   useEffect(() => {
     fetchVideos();
-  }, [videos]);
+  }, []);
 
   // Get the existing shorts from the hosted backend and prime the player.
-  const fetchVideos =async () => {
-    await axios.get("https://liteflex-backend.vercel.app/api/shorts")
-      .then((res) => {
-        setVideos(res.data);
-        if (res.data.length > 0 && !currentVideo) {
-          setCurrentVideo(res.data[0]);
-          setIsPlaying(false);
-        }
-      })
-      .catch((err) => console.error("Error fetching videos:", err));
+  const fetchVideos = async () => {
+    try {
+      const res = await axios.get("https://liteflex-backend.vercel.app/api/shorts");
+      setVideos(res.data);
+      if (res.data.length > 0 && !currentVideo) {
+        setCurrentVideo(res.data[0]);
+        setIsPlaying(false);
+      }
+    } catch (err) {
+      console.error("Error fetching videos:", err);
+    }
   };
 
   const handleLinkChange = (e) => {
